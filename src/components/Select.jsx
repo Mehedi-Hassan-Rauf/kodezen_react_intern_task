@@ -3,6 +3,9 @@ import { FaDeleteLeft } from "react-icons/fa6";
 import { TiDelete } from "react-icons/ti";
 
 const Select = ({
+  isClearable,
+  isSearchable,
+  isDisabled,
   options,
   Placeholder,
   isMulti,
@@ -12,6 +15,7 @@ const Select = ({
 }) => {
   const [menuShow, setMenuShow] = useState(onMenuOpen);
   const [value, setValue] = useState(isMulti ? [] : null);
+
   const selectOption = (e) => {
     if (isMulti) {
       setValue((prev) => [...prev, e.target.innerText]);
@@ -20,14 +24,16 @@ const Select = ({
     }
     setMenuShow((prev) => !prev);
   };
-  const isClearable = (i) => {
+
+  const clear = (i) => {
     if (i == null) {
       setValue(isMulti ? [] : "");
     } else {
       setValue((prev) => prev.filter((_, j) => i !== j));
     }
   };
-  const isSearchable = () => {
+
+  const searchDiv = () => {
     return (
       (isMulti || !value) && (
         <input
@@ -40,6 +46,7 @@ const Select = ({
       )
     );
   };
+
   return (
     <div className="kzui-dropdown">
       <div className={`kzui-value ${menuShow && "kzui-value-clicked"}`}>
@@ -49,12 +56,11 @@ const Select = ({
               ? value.map((option, i) => (
                   <div className="kzui-item" key={i}>
                     <span>{option}</span>
-                    <div
-                      className={`kzui-delete`}
-                      onClick={() => isClearable(i)}
-                    >
-                      <FaDeleteLeft />
-                    </div>
+                    {isClearable && (
+                      <div className={`kzui-delete`} onClick={() => clear(i)}>
+                        <FaDeleteLeft />
+                      </div>
+                    )}
                   </div>
                 ))
               : value && (
@@ -62,13 +68,15 @@ const Select = ({
                     <span>{value}</span>
                   </div>
                 )}
-            {isSearchable()}
+            {isSearchable && searchDiv()}
           </div>
         </div>
         <div className="kzui-icons">
-          <div className={`kzui-delete`} onClick={() => isClearable(null)}>
-            <TiDelete />
-          </div>
+          {(isClearable || isMulti) && (
+            <div className={`kzui-delete`} onClick={() => clear(null)}>
+              <TiDelete />
+            </div>
+          )}
           <div
             className={`kzui-caret ${menuShow && "kzui-caret-rotate"}`}
             onClick={() => setMenuShow((prev) => !prev)}

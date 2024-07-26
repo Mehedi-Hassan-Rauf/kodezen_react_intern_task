@@ -17,6 +17,9 @@ const App = () => {
   return (
     <div className="kzui-App">
       <Select
+        isClearable={true}
+        isSearchable={true}
+        isDisabled={false}
         options={options}
         Placeholder={"Search..."}
         isMulti={false}
@@ -25,6 +28,9 @@ const App = () => {
         onSearchHandler={onSearchHandler}
       />
       <Select
+        isClearable={true}
+        isSearchable={true}
+        isDisabled={false}
         options={options}
         Placeholder={"Search..."}
         isMulti={true}
